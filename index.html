@@ -917,7 +917,7 @@
 
 <div class="win-overlay" id="winOverlay">
   <div class="overlay-chest-wrap" id="overlayChestWrap">
-    <img src="img/almaz.png" alt="сундук" id="overlayChestImg">
+    <img src="almaz.png" alt="сундук" id="overlayChestImg">
   </div>
   <div class="big-coin" id="overlayCoin">🪙</div>
   <div class="big-amount" id="winAmount">0</div>
@@ -1021,7 +1021,6 @@
     document.getElementById('settingsClose').textContent = t('btnClose');
     document.getElementById('settingsApply').textContent = t('btnApply');
 
-    // Обновляем префикс "ID" в уже существующих элементах ленты
     document.querySelectorAll('.feed-item .id').forEach(el => {
       const num = el.textContent.replace(/^ID\s*/, '').trim();
       el.textContent = t('feedIdPrefix') + num;
@@ -1030,14 +1029,15 @@
   /* ================================================= */
 
   /* ==================== ЗВУКИ ==================== */
-  const sfxButton = new Audio('song/knopka.mp3');
-  const sfxSpin   = new Audio('song/ruletka.mp3');
-  const sfxChest  = new Audio('song/zamok.mp3');
-  const sfxWin    = new Audio('song/good999.mp3');
-  const sfxLose   = new Audio('song/konec.mp3');
-  const sfxPobeda = new Audio('song/pobeda.mp3');
+  // Пути без папок, так как все файлы лежат в корне
+  const sfxButton = new Audio('knopka.mp3');
+  const sfxSpin   = new Audio('ruletka.mp3');
+  const sfxChest  = new Audio('zamok.mp3');
+  const sfxWin    = new Audio('good999.mp3');
+  const sfxLose   = new Audio('konec.mp3');
+  const sfxPobeda = new Audio('pobeda.mp3');
 
-  const bgMusic   = new Audio('song/pirat.mp3');
+  const bgMusic   = new Audio('pirat.mp3');
   bgMusic.loop = true;
   bgMusic.volume = 0.12;
   bgMusic.preload = 'auto';
@@ -1121,12 +1121,13 @@
   }
   /* ================================================= */
 
+  // Пути к картинкам без папки img/
   const CHEST_TYPES = [
-    { key: 'wood',    img: 'img/derevo.png',  imgOpen: 'img/derevo_ot.png',  mult: 0.2, weight: 50, label: 'Дерево' },
-    { key: 'stone',   img: 'img/kamen.png',   imgOpen: 'img/kamen_ot.png',   mult: 0.5, weight: 27, label: 'Камень' },
-    { key: 'iron',    img: 'img/zhelezo.png', imgOpen: 'img/zhelezo_ot.png', mult: 1.2, weight: 14, label: 'Железо' },
-    { key: 'gold',    img: 'img/zoloto.png',  imgOpen: 'img/zoloto_ot.png',  mult: 2.5, weight: 7,  label: 'Золото' },
-    { key: 'diamond', img: 'img/almaz.png',   imgOpen: 'img/almaz_ot.png',   mult: 6.0, weight: 2,  label: 'Алмаз' },
+    { key: 'wood',    img: 'derevo.png',  imgOpen: 'derevo_ot.png',  mult: 0.2, weight: 50, label: 'Дерево' },
+    { key: 'stone',   img: 'kamen.png',   imgOpen: 'kamen_ot.png',   mult: 0.5, weight: 27, label: 'Камень' },
+    { key: 'iron',    img: 'zhelezo.png', imgOpen: 'zhelezo_ot.png', mult: 1.2, weight: 14, label: 'Железо' },
+    { key: 'gold',    img: 'zoloto.png',  imgOpen: 'zoloto_ot.png',  mult: 2.5, weight: 7,  label: 'Золото' },
+    { key: 'diamond', img: 'almaz.png',   imgOpen: 'almaz_ot.png',   mult: 6.0, weight: 2,  label: 'Алмаз' },
   ];
 
   const CRITS = [
@@ -1576,7 +1577,7 @@
     winOverlay.classList.add('chest-anim');
     overlayChestWrap.style.display = 'flex';
     overlayChestWrap.classList.remove('shaking');
-    overlayChestImg.src = 'img/almaz.png';
+    overlayChestImg.src = 'almaz.png';
     overlayChestImg.classList.remove('opened-img');
     overlayChestImg.style.opacity = '1';
     winAmountEl.textContent = formatMoney(amount);
@@ -1591,7 +1592,7 @@
       overlayChestWrap.classList.remove('shaking');
       overlayChestImg.style.opacity = '0';
       setTimeout(() => {
-        overlayChestImg.src = 'img/almaz_ot.png';
+        overlayChestImg.src = 'almaz_ot.png';
         overlayChestImg.classList.add('opened-img');
         overlayChestImg.style.opacity = '1';
         if (navigator.vibrate) {
@@ -1714,7 +1715,6 @@
 
     chestRange = chestRangeInput.value;
 
-    // Язык
     const newLang = langInput.value === 'en' ? 'en' : 'ru';
     if (newLang !== lang) {
       lang = newLang;
@@ -1740,7 +1740,6 @@
     betInput.value = v;
   });
 
-  // Применяем сохранённый язык при старте
   applyLangToUI();
   langInput.value = lang;
 
