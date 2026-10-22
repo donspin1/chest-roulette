@@ -385,10 +385,31 @@
   #spinBtn:disabled { opacity: 0.45; box-shadow: none; cursor: default; }
   #spinBtn:disabled::after { animation: none; }
 
+  /* ================= ОВЕРЛЕЙ СУНДУКОВ ================= */
+  .chests-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 6, 22, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .4s ease, backdrop-filter .4s ease, -webkit-backdrop-filter .4s ease;
+  }
+  .chests-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   .chests-area {
-    margin-top: 12px; width: 100%; max-width: 360px;
+    width: 100%; max-width: 360px;
     display: flex; flex-wrap: wrap; justify-content: center;
-    gap: 12px; min-height: 20px;
+    gap: 12px; padding: 20px;
+    align-content: center;
   }
   .chest {
     position: relative;
@@ -516,6 +537,97 @@
   }
   .chest.hint { animation: shake 0.5s ease 2; }
 
+  /* ================= ЛЕНТА ПОБЕД ================= */
+  .live-feed {
+    margin-top: 26px;
+    width: 100%;
+    max-width: 380px;
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 14px;
+    padding: 10px 12px;
+    backdrop-filter: blur(8px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    overflow: hidden;
+  }
+  .live-feed .feed-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .65rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    padding-left: 2px;
+  }
+  .live-feed .feed-title .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 8px rgba(74,222,128,0.9);
+    animation: livePulse 1.4s ease-in-out infinite;
+  }
+  @keyframes livePulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%     { opacity: .4; transform: scale(0.8); }
+  }
+  .feed-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 138px;
+    overflow: hidden;
+    position: relative;
+  }
+  .feed-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: .78rem;
+    line-height: 1.2;
+    padding: 6px 8px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    animation: feedIn .4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  .feed-item.mine {
+    background: linear-gradient(90deg, rgba(245,196,81,0.12), rgba(245,196,81,0.03));
+    border-color: rgba(245,196,81,0.4);
+    box-shadow: 0 0 12px rgba(245,196,81,0.15);
+  }
+  .feed-item .id {
+    color: #cfc8e0;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .feed-item.mine .id { color: var(--gold-2); font-weight: 800; }
+  .feed-item .sum {
+    margin-left: auto;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    flex-shrink: 0;
+  }
+  .feed-item .sum.win { color: #ffde8a; text-shadow: 0 0 8px rgba(245,196,81,0.5); }
+  .feed-item .sum.lose { color: #ff6b8a; }
+  .feed-item .sum .coin-ico { font-size: .8rem; }
+
+  @keyframes feedIn {
+    0%   { opacity: 0; transform: translateX(-12px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ================= ПОБЕДА/ПРОИГРЫШ ================= */
   .win-overlay {
     position: fixed;
     inset: 0;
@@ -651,6 +763,7 @@
     animation: amountIn .6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   }
 
+  /* ================= НАСТРОЙКИ ================= */
   .settings-modal {
     position: fixed;
     inset: 0;
@@ -770,95 +883,6 @@
     color: #cfc8e0;
     border: 1px solid rgba(255,255,255,0.12);
   }
-
-  .live-feed {
-    margin-top: 26px;
-    width: 100%;
-    max-width: 380px;
-    background: var(--panel);
-    border: 1px solid var(--panel-border);
-    border-radius: 14px;
-    padding: 10px 12px;
-    backdrop-filter: blur(8px);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
-    overflow: hidden;
-  }
-  .live-feed .feed-title {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: .65rem;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    padding-left: 2px;
-  }
-  .live-feed .feed-title .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: #4ade80;
-    box-shadow: 0 0 8px rgba(74,222,128,0.9);
-    animation: livePulse 1.4s ease-in-out infinite;
-  }
-  @keyframes livePulse {
-    0%,100% { opacity: 1; transform: scale(1); }
-    50%     { opacity: .4; transform: scale(0.8); }
-  }
-  .feed-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    max-height: 138px;
-    overflow: hidden;
-    position: relative;
-  }
-  .feed-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    font-size: .78rem;
-    line-height: 1.2;
-    padding: 6px 8px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.05);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    animation: feedIn .4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  }
-  .feed-item.mine {
-    background: linear-gradient(90deg, rgba(245,196,81,0.12), rgba(245,196,81,0.03));
-    border-color: rgba(245,196,81,0.4);
-    box-shadow: 0 0 12px rgba(245,196,81,0.15);
-  }
-  .feed-item .id {
-    color: #cfc8e0;
-    font-variant-numeric: tabular-nums;
-    font-weight: 600;
-    flex-shrink: 0;
-  }
-  .feed-item.mine .id { color: var(--gold-2); font-weight: 800; }
-  .feed-item .sum {
-    margin-left: auto;
-    font-weight: 900;
-    font-variant-numeric: tabular-nums;
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    flex-shrink: 0;
-  }
-  .feed-item .sum.win { color: #ffde8a; text-shadow: 0 0 8px rgba(245,196,81,0.5); }
-  .feed-item .sum.lose { color: #ff6b8a; }
-  .feed-item .sum .coin-ico { font-size: .8rem; }
-
-  @keyframes feedIn {
-    0%   { opacity: 0; transform: translateX(-12px); }
-    100% { opacity: 1; transform: translateX(0); }
-  }
 </style>
 </head>
 <body>
@@ -908,11 +932,14 @@
   <button id="spinBtn">КРУТИТЬ</button>
 </div>
 
-<div class="chests-area" id="chestsArea"></div>
-
 <div class="live-feed" id="liveFeed">
-  <div class="feed-title"><span class="dot"></span> <span id="feedTitleText">Последние игроки</span></div>
+  <div class="feed-title"><span class="dot"></span> <span id="feedTitleText">Последние победы</span></div>
   <div class="feed-list" id="feedList"></div>
+</div>
+
+<!-- Оверлей для сундуков -->
+<div class="chests-overlay" id="chestsOverlay">
+  <div class="chests-area" id="chestsArea"></div>
 </div>
 
 <div class="win-overlay" id="winOverlay">
@@ -965,7 +992,7 @@
     ru: {
       spin: 'КРУТИТЬ',
       chestsLabel: 'Сундуков:',
-      feedTitle: 'Последние игроки',
+      feedTitle: 'Последние победы',
       tapHint: 'Тапни, чтобы продолжить',
       settingsTitle: '⚙️ Настройки',
       labelBalance: 'Баланс',
@@ -1029,7 +1056,6 @@
   /* ================================================= */
 
   /* ==================== ЗВУКИ ==================== */
-  // Пути без папок, так как все файлы лежат в корне
   const sfxButton = new Audio('knopka.mp3');
   const sfxSpin   = new Audio('ruletka.mp3');
   const sfxChest  = new Audio('zamok.mp3');
@@ -1056,7 +1082,7 @@
   sfxChest.volume = 0.35;
   sfxWin.volume = 0.6;
   sfxLose.volume = 0.5;
-  sfxPobeda.volume = 0.7;
+  sfxPobeda.volume = 0.3;
 
   const BIG_WIN_THRESHOLD = 10000;
 
@@ -1121,7 +1147,6 @@
   }
   /* ================================================= */
 
-  // Пути к картинкам без папки img/
   const CHEST_TYPES = [
     { key: 'wood',    img: 'derevo.png',  imgOpen: 'derevo_ot.png',  mult: 0.2, weight: 50, label: 'Дерево' },
     { key: 'stone',   img: 'kamen.png',   imgOpen: 'kamen_ot.png',   mult: 0.5, weight: 27, label: 'Камень' },
@@ -1148,6 +1173,7 @@
   const REEL_ITEMS = 30;
   const SPIN_DURATION = 5000;
   const OPEN_ANIM_MS = 650;
+  const SHOW_RESULT_DELAY = 1500; // Задержка перед показом сундуков
 
   const FEED_MAX_ITEMS = 4;
   const FEED_INTERVAL_MIN = 2000;
@@ -1181,6 +1207,7 @@
   const betInput = document.getElementById('betInput');
   const spinBtn = document.getElementById('spinBtn');
   const chestsArea = document.getElementById('chestsArea');
+  const chestsOverlay = document.getElementById('chestsOverlay');
   const betMinus = document.getElementById('betMinus');
   const betPlus = document.getElementById('betPlus');
   const winOverlay = document.getElementById('winOverlay');
@@ -1297,6 +1324,7 @@
     playSfx(sfxButton);
 
     chestsArea.innerHTML = '';
+    chestsOverlay.classList.remove('show'); // Сброс оверлея
     currentChests = [];
     openedCount = 0;
     roundHasJackpot = false;
@@ -1421,10 +1449,17 @@
         return;
       }
 
+      // Остановили рулетку, показываем количество
       stopCountTicker(chestCount);
-      openingPhase = true;
-      setSpinButtonState();
-      renderChests();
+      
+      // Ждем 1.5 секунды, затем размываем экран и показываем сундуки
+      setTimeout(() => {
+        openingPhase = true;
+        setSpinButtonState();
+        chestsOverlay.classList.add('show');
+        renderChests();
+      }, SHOW_RESULT_DELAY);
+      
     }, SPIN_DURATION + 100);
   }
 
@@ -1536,17 +1571,23 @@
 
     const isJackpotVisual = roundIsLucky || roundHasJackpot || winAmount >= JACKPOT_VISUAL_THRESHOLD;
 
-    if (profit > 0) {
-      if (winAmount >= BIG_WIN_THRESHOLD) {
-        playSfx(sfxPobeda);
+    // Скрываем оверлей с сундуками
+    chestsOverlay.classList.remove('show');
+
+    // Небольшая задержка, чтобы оверлей успел исчезнуть перед показом победы/проигрыша
+    setTimeout(() => {
+      if (profit > 0) {
+        if (winAmount >= BIG_WIN_THRESHOLD) {
+          playSfx(sfxPobeda);
+        } else {
+          playSfx(sfxWin);
+        }
+        showWinOverlay(winAmount, isJackpotVisual);
       } else {
-        playSfx(sfxWin);
+        playSfx(sfxLose);
+        showLoseOverlay(-profit);
       }
-      showWinOverlay(winAmount, isJackpotVisual);
-    } else {
-      playSfx(sfxLose);
-      showLoseOverlay(-profit);
-    }
+    }, 300);
 
     openingPhase = false;
     setSpinButtonState();
