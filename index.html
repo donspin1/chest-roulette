@@ -1010,8 +1010,7 @@
       }, 300);
     }, AFTER_OPEN_DELAY);
 
-    openingPhase = false;
-    setSpinButtonState();
+    // Саму разблокировку кнопки переносим в момент закрытия финального оверлея (клик по нему)
   }
 
   function showWinOverlay(amount, jackpot) {
@@ -1074,7 +1073,12 @@
     if (navigator.vibrate) navigator.vibrate([60, 40, 60, 40, 120]);
   }
 
-  winOverlay.addEventListener('click', () => winOverlay.classList.remove('show'));
+  // При клике на экран победы/проигрыша разблокируем кнопку
+  winOverlay.addEventListener('click', () => {
+    winOverlay.classList.remove('show');
+    openingPhase = false;
+    setSpinButtonState();
+  });
 
   function randomId() {
     let s = String(randomInt(1, 9));
@@ -1192,4 +1196,3 @@
 </script>
 </body>
 </html>
-```
