@@ -167,19 +167,15 @@
   /* ================= ОВЕРЛЕЙ СУНДУКОВ ================= */
   .chests-overlay {
     position: fixed; inset: 0; z-index: 90; display: flex; align-items: center; justify-content: center;
-    background: rgba(10, 6, 22, 0.6); /* Статичный фон без тяжелого transition */
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    opacity: 0; pointer-events: none;
-    transition: opacity .3s ease; /* Плавно только прозрачность */
+    background: rgba(10, 6, 22, 0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    opacity: 0; pointer-events: none; transition: opacity .3s ease;
   }
   .chests-overlay.show { opacity: 1; pointer-events: auto; }
 
-  /* Поднимаем контейнер еще выше */
   .chests-area {
     width: 100%; max-width: 360px; display: flex; flex-wrap: wrap; justify-content: center;
     gap: 12px; padding: 20px; align-content: center;
-    transform: translateY(-28vh); /* Поднято еще выше к счетчику */
+    transform: translateY(-32vh); /* Подняли еще выше */
   }
   
   .chest {
@@ -303,8 +299,8 @@
   /* ================= ПОБЕДА/ПРОИГРЫШ ================= */
   .win-overlay {
     position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column;
-    align-items: center; justify-content: flex-start; /* Поднимаем наверх */
-    padding-top: 22vh; /* Отступ сверху такой же, как у сундуков */
+    align-items: center; justify-content: flex-start;
+    padding-top: 18vh; /* Экран победы поднят на тот же уровень, что и сундуки */
     background: rgba(10, 6, 22, 0.92); backdrop-filter: blur(10px);
     opacity: 0; pointer-events: none; transition: opacity .35s ease; cursor: pointer;
   }
@@ -317,7 +313,9 @@
   @keyframes winGlow { 0%,100% { opacity: .6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); } }
 
   .win-overlay .big-coin {
-    font-size: 6rem; filter: drop-shadow(0 0 30px rgba(245,196,81,0.9)); animation: coinSpin 1.5s ease-in-out infinite; margin-bottom: 8px; z-index: 1;
+    font-size: 5.5rem; /* Чуть уменьшили, чтобы влезало */
+    text-shadow: 0 0 30px rgba(245,196,81,0.9); /* Заменили тяжелый filter на text-shadow */
+    animation: coinSpin 1.5s ease-in-out infinite; margin-bottom: 8px; z-index: 1;
   }
   @keyframes coinSpin { 0%,100% { transform: rotateY(0deg) scale(1); } 50% { transform: rotateY(180deg) scale(1.08); } }
   
@@ -328,11 +326,11 @@
     animation: amountIn .6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   }
   .win-overlay.jackpot-mode::before { background: radial-gradient(circle at 50% 30%, rgba(255,77,224,0.4), transparent 55%); animation: winGlow 1s ease-in-out infinite; }
-  .win-overlay.jackpot-mode .big-coin { filter: drop-shadow(0 0 40px rgba(255,77,224,1)); animation: coinSpin 0.8s ease-in-out infinite; }
+  .win-overlay.jackpot-mode .big-coin { text-shadow: 0 0 40px rgba(255,77,224,1); animation: coinSpin 0.8s ease-in-out infinite; }
   .win-overlay.jackpot-mode .big-amount { color: #ff7dea; text-shadow: 0 0 40px rgba(255,77,224,1), 0 0 80px rgba(255,77,224,0.6); }
   
   .win-overlay.lose-mode::before { background: radial-gradient(circle at 50% 30%, rgba(255,60,100,0.3), transparent 55%); }
-  .win-overlay.lose-mode .big-coin { filter: drop-shadow(0 0 30px rgba(255,80,110,0.8)) grayscale(1); animation: none; }
+  .win-overlay.lose-mode .big-coin { text-shadow: 0 0 30px rgba(255,80,110,0.8); animation: none; filter: grayscale(1); }
   .win-overlay.lose-mode .big-amount { color: #ff6b8a; text-shadow: 0 0 30px rgba(255,107,138,0.8), 0 0 60px rgba(255,107,138,0.4); }
   
   .win-overlay .tap-hint {
@@ -513,36 +511,18 @@
   /* ==================== ЯЗЫК ==================== */
   const I18N = {
     ru: {
-      spin: 'КРУТИТЬ',
-      chestsLabel: 'Сундуков:',
-      feedTitle: 'Последние победы',
-      tapHint: 'Тапни, чтобы продолжить',
-      settingsTitle: '⚙️ Настройки',
-      labelBalance: 'Баланс',
-      labelWinChance: 'Вероятность сундуков, %',
+      spin: 'КРУТИТЬ', chestsLabel: 'Сундуков:', feedTitle: 'Последние победы', tapHint: 'Тапни, чтобы продолжить',
+      settingsTitle: '⚙️ Настройки', labelBalance: 'Баланс', labelWinChance: 'Вероятность сундуков, %',
       hintWinChance: 'Шанс, что вообще выпадут сундуки. Но даже с ними сумма может не окупить ставку.',
-      labelChestRange: 'Сундуков за раунд',
-      optDefault: 'По умолчанию (1–10, редко большие)',
-      labelLang: 'Язык / Language',
-      btnClose: 'Закрыть',
-      btnApply: 'Применить',
-      feedIdPrefix: 'ID ',
+      labelChestRange: 'Сундуков за раунд', optDefault: 'По умолчанию (1–10, редко большие)',
+      labelLang: 'Язык / Language', btnClose: 'Закрыть', btnApply: 'Применить', feedIdPrefix: 'ID ',
     },
     en: {
-      spin: 'SPIN',
-      chestsLabel: 'Chests:',
-      feedTitle: 'Recent wins',
-      tapHint: 'Tap to continue',
-      settingsTitle: '⚙️ Settings',
-      labelBalance: 'Balance',
-      labelWinChance: 'Chest chance, %',
+      spin: 'SPIN', chestsLabel: 'Chests:', feedTitle: 'Recent wins', tapHint: 'Tap to continue',
+      settingsTitle: '⚙️ Settings', labelBalance: 'Balance', labelWinChance: 'Chest chance, %',
       hintWinChance: 'Chance that chests appear at all. Even then the total may not cover your bet.',
-      labelChestRange: 'Chests per round',
-      optDefault: 'Default (1–10, big ones rare)',
-      labelLang: 'Language / Язык',
-      btnClose: 'Close',
-      btnApply: 'Apply',
-      feedIdPrefix: 'ID ',
+      labelChestRange: 'Chests per round', optDefault: 'Default (1–10, big ones rare)',
+      labelLang: 'Language / Язык', btnClose: 'Close', btnApply: 'Apply', feedIdPrefix: 'ID ',
     }
   };
 
@@ -576,7 +556,6 @@
       el.textContent = t('feedIdPrefix') + num;
     });
   }
-  /* ================================================= */
 
   /* ==================== ЗВУКИ ==================== */
   const sfxButton = new Audio('knopka.mp3');
@@ -591,13 +570,7 @@
   bgMusic.volume = 0.12;
   bgMusic.preload = 'auto';
 
-  sfxButton.preload = 'auto';
-  sfxSpin.preload = 'auto';
-  sfxChest.preload = 'auto';
-  sfxWin.preload = 'auto';
-  sfxLose.preload = 'auto';
-  sfxPobeda.preload = 'auto';
-
+  [sfxButton, sfxSpin, sfxChest, sfxWin, sfxLose, sfxPobeda].forEach(a => a.preload = 'auto');
   sfxSpin.loop = true;
 
   sfxButton.volume = 0.7;
@@ -608,7 +581,6 @@
   sfxPobeda.volume = 0.3;
 
   const BIG_WIN_THRESHOLD = 10000;
-
   let audioUnlocked = false;
   let bgMusicStarted = false;
 
@@ -624,25 +596,17 @@
   function unlockAudio() {
     if (audioUnlocked) return;
     audioUnlocked = true;
-
     [sfxButton, sfxSpin, sfxChest, sfxWin, sfxLose, sfxPobeda].forEach(a => {
       try {
         a.muted = true;
         const p = a.play();
         if (p && p.then) {
-          p.then(() => {
-            a.pause();
-            a.currentTime = 0;
-            a.muted = false;
-          }).catch(() => { a.muted = false; });
+          p.then(() => { a.pause(); a.currentTime = 0; a.muted = false; }).catch(() => { a.muted = false; });
         } else {
-          a.pause();
-          a.currentTime = 0;
-          a.muted = false;
+          a.pause(); a.currentTime = 0; a.muted = false;
         }
       } catch (e) { a.muted = false; }
     });
-
     startBgMusic();
   }
 
@@ -668,8 +632,8 @@
       sfxSpin.currentTime = 0;
     } catch (e) {}
   }
-  /* ================================================= */
 
+  /* ==================== ЛОГИКА ==================== */
   const CHEST_TYPES = [
     { key: 'wood',    img: 'derevo.png',  imgOpen: 'derevo_ot.png',  mult: 0.2, weight: 50, label: 'Дерево' },
     { key: 'stone',   img: 'kamen.png',   imgOpen: 'kamen_ot.png',   mult: 0.5, weight: 27, label: 'Камень' },
@@ -689,22 +653,18 @@
   const LUCKY_MAX = 97000;
   const LUCKY_SPIN_MIN = 7;
   const LUCKY_SPIN_MAX = 10;
-
   const JACKPOT_VISUAL_THRESHOLD = 10000;
-
   const REEL_ITEM_W = 120;
   const REEL_ITEMS = 30;
   const SPIN_DURATION = 5000;
   const OPEN_ANIM_MS = 650;
   
-  // Задержки
-  const SHOW_RESULT_DELAY = 1500; // Пауза для просмотра счётчика
-  const AFTER_OPEN_DELAY = 1500;  // Пауза после открытия последнего сундука
+  const SHOW_RESULT_DELAY = 1500;
+  const AFTER_OPEN_DELAY = 1500;
 
   const FEED_MAX_ITEMS = 4;
   const FEED_INTERVAL_MIN = 2000;
   const FEED_INTERVAL_MAX = 4000;
-
   const MY_ID = '231403101';
 
   let balance = 1000;
@@ -720,7 +680,6 @@
   let roundIsLucky = false;
   let roundLuckyAmount = 0;
   let busyChests = new Set();
-
   let spinsSinceLucky = 0;
   let nextLuckyAt = randLuckyThreshold();
   let feedTimeout = null;
@@ -752,18 +711,10 @@
   const chestRangeInput = document.getElementById('chestRangeInput');
   const langInput = document.getElementById('langInput');
 
-  function randLuckyThreshold() {
-    return LUCKY_SPIN_MIN + Math.floor(Math.random() * (LUCKY_SPIN_MAX - LUCKY_SPIN_MIN + 1));
-  }
-
-  function formatMoney(n) {
-    return n.toLocaleString('ru-RU');
-  }
-
-  function updateBalance() {
-    balanceEl.textContent = formatMoney(balance);
-  }
-
+  function randLuckyThreshold() { return LUCKY_SPIN_MIN + Math.floor(Math.random() * (LUCKY_SPIN_MAX - LUCKY_SPIN_MIN + 1)); }
+  function formatMoney(n) { return n.toLocaleString('ru-RU'); }
+  function updateBalance() { balanceEl.textContent = formatMoney(balance); }
+  
   function getBet() {
     let v = parseInt(betInput.value, 10);
     if (isNaN(v) || v < 10) v = 10;
@@ -772,33 +723,23 @@
     return v;
   }
 
-  function randomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+  function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
   function pickChestType() {
     const total = CHEST_TYPES.reduce((s, c) => s + c.weight, 0);
     let r = Math.random() * total;
-    for (const c of CHEST_TYPES) {
-      r -= c.weight;
-      if (r <= 0) return c;
-    }
+    for (const c of CHEST_TYPES) { r -= c.weight; if (r <= 0) return c; }
     return CHEST_TYPES[0];
   }
 
   function rollCrit() {
     const total = CRITS.reduce((s, c) => s + c.chance, 0);
     let r = Math.random() * total;
-    for (const c of CRITS) {
-      r -= c.chance;
-      if (r <= 0) return c;
-    }
+    for (const c of CRITS) { r -= c.chance; if (r <= 0) return c; }
     return CRITS[0];
   }
 
-  function setSpinButtonState() {
-    spinBtn.disabled = spinning || openingPhase;
-  }
+  function setSpinButtonState() { spinBtn.disabled = spinning || openingPhase; }
 
   function buildReel() {
     reelStrip.innerHTML = '';
@@ -825,9 +766,7 @@
       const progress = Math.min(elapsed / SPIN_DURATION, 1);
       const easeOut = 1 - Math.pow(1 - progress, 3);
       const nextDelay = 80 + easeOut * 320;
-      if (progress < 1) {
-        countTimeout = setTimeout(tick, nextDelay);
-      }
+      if (progress < 1) countTimeout = setTimeout(tick, nextDelay);
     }
     tick();
   }
@@ -877,8 +816,8 @@
     }
 
     const hasChests = roundIsLucky ? true : Math.random() * 100 < winChance;
-
     let chestCount = 0;
+
     if (hasChests) {
       if (roundIsLucky) {
         chestCount = randomInt(3, 5);
@@ -897,14 +836,10 @@
           [shares[i], shares[j]] = [shares[j], shares[i]];
         }
         for (let i = 0; i < chestCount; i++) {
-          const type = pickChestType();
           currentChests.push({
-            type,
+            type: pickChestType(),
             crit: { mult: 1, cls: 'crit-jackpot', name: 'lucky' },
-            finalMult: 0,
-            luckyAmount: shares[i],
-            isLucky: true,
-            opened: false
+            finalMult: 0, luckyAmount: shares[i], isLucky: true, opened: false
           });
         }
         roundHasJackpot = true;
@@ -931,13 +866,7 @@
           const crit = rollCrit();
           const finalMult = type.mult * crit.mult;
           if (crit.mult >= 10) roundHasJackpot = true;
-          currentChests.push({
-            type,
-            crit,
-            finalMult,
-            isLucky: false,
-            opened: false
-          });
+          currentChests.push({ type, crit, finalMult, isLucky: false, opened: false });
         }
       }
     }
@@ -959,26 +888,18 @@
     setTimeout(() => {
       spinning = false;
       setSpinButtonState();
-
       stopSpinSound();
 
       if (!hasChests) {
         stopCountTicker(0);
-        addFeedItem({
-          isWin: false,
-          id: MY_ID,
-          amount: bet,
-          isMine: true
-        });
+        addFeedItem({ isWin: false, id: MY_ID, amount: bet, isMine: true });
         playSfx(sfxLose);
         showLoseOverlay(bet);
         return;
       }
 
-      // Остановили рулетку, показываем количество
       stopCountTicker(chestCount);
       
-      // Ждем 1.5 секунды, затем размываем экран и показываем сундуки
       setTimeout(() => {
         openingPhase = true;
         setSpinButtonState();
@@ -1002,7 +923,6 @@
       img.src = chest.type.img;
       img.alt = chest.type.label;
       el.appendChild(img);
-
       el.addEventListener('click', () => openChest(idx, el));
       chestsArea.appendChild(el);
     });
@@ -1017,11 +937,9 @@
 
   function openChest(idx, el) {
     const chest = currentChests[idx];
-    if (chest.opened || !openingPhase) return;
-    if (busyChests.has(idx)) return;
+    if (chest.opened || !openingPhase || busyChests.has(idx)) return;
 
     busyChests.add(idx);
-
     unlockAudio();
     playSfx(sfxChest);
 
@@ -1044,72 +962,44 @@
         img.style.opacity = '1';
       }, 120);
 
-      let coinGain;
-      if (chest.isLucky) {
-        coinGain = chest.luckyAmount;
-      } else {
-        coinGain = Math.round(currentBet * chest.finalMult);
-      }
+      let coinGain = chest.isLucky ? chest.luckyAmount : Math.round(currentBet * chest.finalMult);
 
       const badge = document.createElement('div');
       badge.className = 'mult';
-      if (chest.isLucky) badge.classList.add('jackpot');
-      else if (chest.crit.mult >= 50) badge.classList.add('jackpot');
+      if (chest.isLucky || chest.crit.mult >= 50) badge.classList.add('jackpot');
       else if (chest.crit.mult >= 3) badge.classList.add('crit');
       badge.textContent = formatMoney(coinGain);
       el.appendChild(badge);
 
       if (navigator.vibrate) {
-        if (chest.isLucky) navigator.vibrate([80, 40, 80, 40, 200]);
-        else if (chest.crit.mult >= 50) navigator.vibrate([80, 40, 80, 40, 200]);
+        if (chest.isLucky || chest.crit.mult >= 50) navigator.vibrate([80, 40, 80, 40, 200]);
         else if (chest.crit.mult >= 10) navigator.vibrate([60, 30, 120]);
         else if (chest.crit.mult >= 3) navigator.vibrate([40, 30, 80]);
         else navigator.vibrate(25);
       }
 
       busyChests.delete(idx);
-
-      if (openedCount === currentChests.length) {
-        finishRound();
-      }
+      if (openedCount === currentChests.length) finishRound();
     }, OPEN_ANIM_MS);
   }
 
   function finishRound() {
-    let winAmount = 0;
-    if (roundIsLucky) {
-      winAmount = currentChests.reduce((s, c) => s + (c.luckyAmount || 0), 0);
-    } else {
-      const totalMult = currentChests.reduce((s, c) => s + c.finalMult, 0);
-      winAmount = Math.round(currentBet * totalMult);
-    }
+    let winAmount = roundIsLucky 
+      ? currentChests.reduce((s, c) => s + (c.luckyAmount || 0), 0)
+      : Math.round(currentBet * currentChests.reduce((s, c) => s + c.finalMult, 0));
 
     const profit = winAmount - currentBet;
     balance += winAmount;
     updateBalance();
 
-    addFeedItem({
-      isWin: profit > 0,
-      id: MY_ID,
-      amount: Math.abs(profit),
-      isMine: true
-    });
-
+    addFeedItem({ isWin: profit > 0, id: MY_ID, amount: Math.abs(profit), isMine: true });
     const isJackpotVisual = roundIsLucky || roundHasJackpot || winAmount >= JACKPOT_VISUAL_THRESHOLD;
 
-    // Ждем 1.5 секунды, чтобы игрок посмотрел на открытые сундуки
     setTimeout(() => {
-      // Скрываем оверлей с сундуками
       chestsOverlay.classList.remove('show');
-
-      // Еще небольшая задержка (300мс), чтобы оверлей сундуков успел исчезнуть
       setTimeout(() => {
         if (profit > 0) {
-          if (winAmount >= BIG_WIN_THRESHOLD) {
-            playSfx(sfxPobeda);
-          } else {
-            playSfx(sfxWin);
-          }
+          playSfx(winAmount >= BIG_WIN_THRESHOLD ? sfxPobeda : sfxWin);
           showWinOverlay(winAmount, isJackpotVisual);
         } else {
           playSfx(sfxLose);
@@ -1137,10 +1027,7 @@
       winAmountEl.classList.remove('revealed');
       overlayCoin.textContent = jackpot ? '💎' : '🪙';
       winAmountEl.textContent = formatMoney(amount);
-      if (navigator.vibrate) {
-        if (jackpot) navigator.vibrate([80, 50, 80, 50, 80, 50, 300]);
-        else navigator.vibrate([30, 40, 60]);
-      }
+      if (navigator.vibrate) navigator.vibrate(jackpot ? [80, 50, 80, 50, 80, 50, 300] : [30, 40, 60]);
       return;
     }
 
@@ -1165,13 +1052,8 @@
         overlayChestImg.src = 'almaz_ot.png';
         overlayChestImg.classList.add('opened-img');
         overlayChestImg.style.opacity = '1';
-        if (navigator.vibrate) {
-          if (jackpot) navigator.vibrate([80, 50, 80, 50, 80, 50, 300]);
-          else navigator.vibrate([40, 30, 80]);
-        }
-        setTimeout(() => {
-          winAmountEl.classList.add('revealed');
-        }, 250);
+        if (navigator.vibrate) navigator.vibrate(jackpot ? [80, 50, 80, 50, 80, 50, 300] : [40, 30, 80]);
+        setTimeout(() => { winAmountEl.classList.add('revealed'); }, 250);
       }, 150);
     }, 800);
   }
@@ -1190,9 +1072,7 @@
     if (navigator.vibrate) navigator.vibrate([60, 40, 60, 40, 120]);
   }
 
-  winOverlay.addEventListener('click', () => {
-    winOverlay.classList.remove('show');
-  });
+  winOverlay.addEventListener('click', () => winOverlay.classList.remove('show'));
 
   function randomId() {
     let s = String(randomInt(1, 9));
@@ -1202,7 +1082,6 @@
 
   function randomFeedEvent() {
     const isWin = Math.random() < 0.65;
-    const id = randomId();
     let amount;
     if (isWin) {
       const r = Math.random();
@@ -1213,7 +1092,7 @@
     } else {
       amount = randomInt(50, 5000);
     }
-    return { isWin, id, amount };
+    return { isWin, id: randomId(), amount };
   }
 
   function addFeedItem(evt) {
@@ -1227,12 +1106,10 @@
 
     const sumEl = document.createElement('span');
     sumEl.className = 'sum ' + (evt.isWin ? 'win' : 'lose');
-    sumEl.innerHTML = '<span class="coin-ico">🪙</span>' +
-      (evt.isWin ? '+' : '-') + formatMoney(evt.amount);
+    sumEl.innerHTML = '<span class="coin-ico">🪙</span>' + (evt.isWin ? '+' : '-') + formatMoney(evt.amount);
 
     el.appendChild(idEl);
     el.appendChild(sumEl);
-
     feedList.prepend(el);
 
     while (feedList.children.length > FEED_MAX_ITEMS) {
@@ -1249,9 +1126,7 @@
   }
 
   function startFeed() {
-    for (let i = 0; i < FEED_MAX_ITEMS; i++) {
-      addFeedItem(randomFeedEvent());
-    }
+    for (let i = 0; i < FEED_MAX_ITEMS; i++) addFeedItem(randomFeedEvent());
     scheduleFeed();
   }
 
@@ -1263,13 +1138,8 @@
     settingsModal.classList.add('show');
   });
 
-  settingsClose.addEventListener('click', () => {
-    settingsModal.classList.remove('show');
-  });
-
-  settingsModal.addEventListener('click', (e) => {
-    if (e.target === settingsModal) settingsModal.classList.remove('show');
-  });
+  settingsClose.addEventListener('click', () => settingsModal.classList.remove('show'));
+  settingsModal.addEventListener('click', (e) => { if (e.target === settingsModal) settingsModal.classList.remove('show'); });
 
   settingsApply.addEventListener('click', () => {
     let b = parseInt(balanceInput.value, 10);
@@ -1291,7 +1161,6 @@
       try { localStorage.setItem('chestLang', lang); } catch (e) {}
       applyLangToUI();
     }
-
     settingsModal.classList.remove('show');
   });
 
