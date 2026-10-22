@@ -1,3 +1,14 @@
+Точно, извиняюсь! Если выпадал проигрыш (без сундуков), флаг `openingPhase` вообще не включался, но и не выключался — он мог застрять в `true` с предыдущего раунда, или просто кнопка не разблокировалась после закрытия оверлея.
+
+Я исправил это двумя способами:
+1. При старте нового спина (`doSpin`) флаг `openingPhase` принудительно сбрасывается.
+2. В момент остановки рулетки в случае проигрыша (когда нет сундуков) флаг **тоже** ставится в `true`, чтобы кнопка была заблокирована до тех пор, пока игрок не закроет экран с проигрышем. И разблокируется она точно так же — по клику на этот экран.
+
+Теперь логика работы кнопки абсолютно железная.
+
+Замените ваш `index.html` на этот:
+
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -781,7 +792,6 @@
   }
 
   function doSpin() {
-    // Полная блокировка кнопки, даже если обошли disabled
     if (spinning || openingPhase) return;
     const bet = getBet();
     if (bet > balance) return;
@@ -789,6 +799,8 @@
     unlockAudio();
     playSfx(sfxButton);
 
+    // Сброс стейтов перед новым раундом
+    openingPhase = false;
     chestsArea.innerHTML = '';
     chestsOverlay.classList.remove('show');
     currentChests = [];
@@ -890,20 +902,24 @@
       spinning = false;
       stopSpinSound();
 
+      // Жестко фиксируем, что мы в фазе открытия (блокирует кнопку)
+      openingPhase = true; 
+      setSpinButtonState();
+
       if (!hasChests) {
         stopCountTicker(0);
         addFeedItem({ isWin: false, id: MY_ID, amount: bet, isMine: true });
-        playSfx(sfxLose);
-        showLoseOverlay(bet);
+        
+        // Небольшая задержка перед экраном проигрыша
+        setTimeout(() => {
+          playSfx(sfxLose);
+          showLoseOverlay(bet);
+        }, 500);
         return;
       }
 
       stopCountTicker(chestCount);
       
-      // Блокируем кнопку сразу после остановки рулетки
-      openingPhase = true; 
-      setSpinButtonState();
-
       setTimeout(() => {
         chestsOverlay.classList.add('show');
         renderChests();
@@ -1009,8 +1025,6 @@
         }
       }, 300);
     }, AFTER_OPEN_DELAY);
-
-    // Саму разблокировку кнопки переносим в момент закрытия финального оверлея (клик по нему)
   }
 
   function showWinOverlay(amount, jackpot) {
@@ -1073,7 +1087,7 @@
     if (navigator.vibrate) navigator.vibrate([60, 40, 60, 40, 120]);
   }
 
-  // При клике на экран победы/проигрыша разблокируем кнопку
+  // Разблокировка кнопки при закрытии любого финального экрана
   winOverlay.addEventListener('click', () => {
     winOverlay.classList.remove('show');
     openingPhase = false;
@@ -1196,3 +1210,4 @@
 </script>
 </body>
 </html>
+```
